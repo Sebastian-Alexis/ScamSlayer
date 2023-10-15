@@ -35,6 +35,12 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 
+// After detecting a suspicious popup...
+chrome.storage.local.get(["counter"], function (result) {
+  let count = result.counter || 0;
+  chrome.storage.local.set({ counter: count + 1 });
+});
+
 observer.observe(document.body, {
   childList: true,
   subtree: true,

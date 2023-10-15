@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScamSlayer Popup</title>
+    <!-- Import Tailwind CSS via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Import DaisyUI via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@1.13.0/dist/full.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Optional: Set a fixed width for the popup to avoid resizing issues */
+      body {
+        width: 300px;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100" theme="cupcake">
+    <div class="p-4">
+      <h1 class="text-xl font-bold mb-4">ScamSlayer</h1>
+      <p class="mb-4">Suspicious pop-ups detected:</p>
+      <div class="text-3xl font-bold" id="counter">0</div>
+    </div>
+
+    <script>
+      // Fetch the local counter value and display it.
+      chrome.storage.local.get(["counter"], function (result) {
+        let count = result.counter || 0;
+        document.getElementById("counter").innerText = count;
+      });
+    </script>
+  </body>
+</html>
