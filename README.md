@@ -1,6 +1,6 @@
 # ScamSlayer Chrome Extension
 
-![ScamSlayer Logo](ScamSlayerTumbnail.png)
+![ScamSlayer Logo](https://github.com/Sebastian-Alexis/ScamSlayer/blob/main/ScamSlayerTumbnail.png?raw=true)
 
 ScamSlayer is a Chrome extension designed to enhance user security by detecting and alerting users of suspicious popups that might be phishing attempts or other malicious activities.
 
