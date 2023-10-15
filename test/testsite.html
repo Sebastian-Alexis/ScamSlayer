@@ -6,7 +6,6 @@
     <title>ScamSlayer Test Page</title>
     <style>
       .popup {
-        display: none;
         position: fixed;
         top: 50%;
         left: 50%;
@@ -21,14 +20,13 @@
   <body>
     <button onclick="showPopup()">Trigger Popup</button>
 
-    <div class="popup" id="scamPopup">
-      Warning! Your computer might be infected with a virus. Contact support
-      immediately!
-    </div>
-
     <script>
       function showPopup() {
-        document.getElementById("scamPopup").style.display = "block";
+        let scamPopup = document.createElement("div");
+        scamPopup.classList.add("popup");
+        scamPopup.innerText =
+          "Warning! Your computer might be infected with a virus. Contact support immediately!";
+        document.body.appendChild(scamPopup);
       }
     </script>
   </body>
