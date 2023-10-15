@@ -16,6 +16,8 @@ const observer = new MutationObserver((mutations) => {
       console.log("New nodes added"); // Logging
 
       for (let node of mutation.addedNodes) {
+        console.log(`Node type: ${node.nodeType}`); // Logging node type
+
         if (node.nodeType === Node.ELEMENT_NODE) {
           console.log(`Checking element: ${node.nodeName}`); // Logging
 
@@ -25,31 +27,36 @@ const observer = new MutationObserver((mutations) => {
             containsScamKeywords(node.innerText)
           ) {
             console.log("Suspicious content detected"); // Logging
-            alert(
-              "Warning: This popup may be suspicious. Remember, you are in Chrome and its likely from the website, not your computer."
-            );
+
+            // Increment counter in storage
+            chrome.storage.local.get(["counter"], function (result) {
+              if (chrome.runtime.lastError) {
+                console.error(
+                  "Error fetching counter:",
+                  chrome.runtime.lastError
+                );
+                return;
+              }
+              let count = result.counter || 0;
+              console.log("Current counter value (before increment):", count);
+
+              chrome.storage.local.set({ counter: count + 1 }, function () {
+                if (chrome.runtime.lastError) {
+                  console.error(
+                    "Error setting counter:",
+                    chrome.runtime.lastError
+                  );
+                } else {
+                  console.log(
+                    "Successfully incremented counter to:",
+                    count + 1
+                  );
+                }
+              });
+            });
           }
         }
       }
-    }
-  });
-});
-
-// After detecting a suspicious popup...
-// After detecting a suspicious popup...
-chrome.storage.local.get(["counter"], function (result) {
-  if (chrome.runtime.lastError) {
-    console.error("Error fetching counter:", chrome.runtime.lastError);
-    return;
-  }
-  let count = result.counter || 0;
-  console.log("Current counter value (before increment):", count);
-
-  chrome.storage.local.set({ counter: count + 1 }, function () {
-    if (chrome.runtime.lastError) {
-      console.error("Error setting counter:", chrome.runtime.lastError);
-    } else {
-      console.log("Successfully incremented counter to:", count + 1);
     }
   });
 });
