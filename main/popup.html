@@ -15,14 +15,14 @@
       rel="stylesheet"
     />
     <style>
-      /* Optional: Set a fixed width for the popup to avoid resizing issues */
+      /* Set a fixed width for the popup to avoid resizing issues */
       body {
         width: 300px;
       }
     </style>
   </head>
 
-  <body class="bg-gray-100" theme="cupcake">
+  <body class="bg-purple-50 text-black" theme="cupcake">
     <div class="p-4">
       <h1 class="text-xl font-bold mb-4">ScamSlayer</h1>
       <p class="mb-4">Suspicious pop-ups detected:</p>
@@ -32,7 +32,12 @@
     <script>
       // Fetch the local counter value and display it.
       chrome.storage.local.get(["counter"], function (result) {
+        if (chrome.runtime.lastError) {
+          console.error("Error fetching counter:", chrome.runtime.lastError);
+          return;
+        }
         let count = result.counter || 0;
+        console.log("Retrieved counter value:", count);
         document.getElementById("counter").innerText = count;
       });
     </script>
