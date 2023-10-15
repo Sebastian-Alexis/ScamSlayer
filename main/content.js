@@ -7,6 +7,30 @@ function containsScamKeywords(text) {
   return SCAM_KEYWORDS.some((keyword) => text.toLowerCase().includes(keyword));
 }
 
+// Function to convert an HTML string to a DOM node
+function htmlToElement(html) {
+  const template = document.createElement("template");
+  template.innerHTML = html.trim();
+  return template.content.firstChild;
+}
+
+// Create Shadow DOM root and inject styles
+const shadowRoot = document.createElement("div");
+document.body.appendChild(shadowRoot);
+const shadow = shadowRoot.attachShadow({ mode: "open" });
+
+// Inject styles into Shadow DOM
+const tailwindLink = document.createElement("link");
+tailwindLink.href =
+  "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
+tailwindLink.rel = "stylesheet";
+shadow.appendChild(tailwindLink);
+
+const daisyLink = document.createElement("link");
+daisyLink.href = "https://cdn.jsdelivr.net/npm/daisyui/dist/full.css";
+daisyLink.rel = "stylesheet";
+shadow.appendChild(daisyLink);
+
 // Listen for the creation of new elements in the DOM
 const observer = new MutationObserver((mutations) => {
   console.log("Mutation observed");
@@ -21,7 +45,6 @@ const observer = new MutationObserver((mutations) => {
         if (node.nodeType === Node.ELEMENT_NODE) {
           console.log(`Checking element: ${node.nodeName}`);
 
-          // If it's a popup (like a modal) check its content
           if (
             node instanceof HTMLElement &&
             containsScamKeywords(node.innerText) &&
@@ -29,13 +52,24 @@ const observer = new MutationObserver((mutations) => {
           ) {
             console.log("Suspicious content detected");
 
-            let alertNode = document.createElement("div");
-            alertNode.innerText =
-              "Warning: This popup may be suspicious. Remember, you are in Chrome and it's likely from the website, not your computer.";
-            alertNode.classList.add("scamslayer-alert");
-            document.body.appendChild(alertNode);
+            // Create the DaisyUI alert with a warning emoji
+            const alertHTML = `
+                            <div class="alert scamslayer-alert p-1">
+                                <span class="mr-1">⚠️</span>
+                                <span class="text-sm">Warning: This popup may be suspicious. Remember, you are in Chrome and it's likely from the website, not your computer.</span>
+                                <div class="mt-1">
+                                    <button class="btn btn-sm btn-primary">OK</button>
+                                </div>
+                            </div>
+                        `;
+            let alertNode = htmlToElement(alertHTML);
+            alertNode.querySelector("button").onclick = function () {
+              alertNode.remove();
+            };
+            shadow.appendChild(alertNode);
 
-            // Increment counter in storage
+            console.log("Alert added to page");
+
             chrome.storage.local.get(["counter"], function (result) {
               if (chrome.runtime.lastError) {
                 console.error(
