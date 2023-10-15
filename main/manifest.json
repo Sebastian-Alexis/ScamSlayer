@@ -12,5 +12,11 @@
   ],
   "action": {
     "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "ScamSlayerLogo.png",
+    "48": "ScamSlayerLogo.png",
+    "128": "ScamSlayerLogo.png"
   }
 }
