@@ -36,17 +36,20 @@ const observer = new MutationObserver((mutations) => {
 });
 
 // After detecting a suspicious popup...
+// After detecting a suspicious popup...
 chrome.storage.local.get(["counter"], function (result) {
   if (chrome.runtime.lastError) {
     console.error("Error fetching counter:", chrome.runtime.lastError);
     return;
   }
   let count = result.counter || 0;
+  console.log("Current counter value (before increment):", count);
+
   chrome.storage.local.set({ counter: count + 1 }, function () {
     if (chrome.runtime.lastError) {
       console.error("Error setting counter:", chrome.runtime.lastError);
     } else {
-      console.log("Updated counter value:", count + 1);
+      console.log("Successfully incremented counter to:", count + 1);
     }
   });
 });

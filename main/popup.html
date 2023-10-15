@@ -33,11 +33,14 @@
       // Fetch the local counter value and display it.
       chrome.storage.local.get(["counter"], function (result) {
         if (chrome.runtime.lastError) {
-          console.error("Error fetching counter:", chrome.runtime.lastError);
+          console.error(
+            "Error fetching counter in popup:",
+            chrome.runtime.lastError
+          );
           return;
         }
         let count = result.counter || 0;
-        console.log("Retrieved counter value:", count);
+        console.log("Counter value retrieved in popup:", count);
         document.getElementById("counter").innerText = count;
       });
     </script>
