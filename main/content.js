@@ -9,24 +9,31 @@ function containsScamKeywords(text) {
 
 // Listen for the creation of new elements in the DOM
 const observer = new MutationObserver((mutations) => {
-  console.log("Mutation observed"); // Logging
+  console.log("Mutation observed");
 
   mutations.forEach((mutation) => {
     if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-      console.log("New nodes added"); // Logging
+      console.log("New nodes added");
 
       for (let node of mutation.addedNodes) {
-        console.log(`Node type: ${node.nodeType}`); // Logging node type
+        console.log(`Node type: ${node.nodeType}`);
 
         if (node.nodeType === Node.ELEMENT_NODE) {
-          console.log(`Checking element: ${node.nodeName}`); // Logging
+          console.log(`Checking element: ${node.nodeName}`);
 
           // If it's a popup (like a modal) check its content
           if (
             node instanceof HTMLElement &&
-            containsScamKeywords(node.innerText)
+            containsScamKeywords(node.innerText) &&
+            !node.classList.contains("scamslayer-alert")
           ) {
-            console.log("Suspicious content detected"); // Logging
+            console.log("Suspicious content detected");
+
+            let alertNode = document.createElement("div");
+            alertNode.innerText =
+              "Warning: This popup may be suspicious. Remember, you are in Chrome and it's likely from the website, not your computer.";
+            alertNode.classList.add("scamslayer-alert");
+            document.body.appendChild(alertNode);
 
             // Increment counter in storage
             chrome.storage.local.get(["counter"], function (result) {
